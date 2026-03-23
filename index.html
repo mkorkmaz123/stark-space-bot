@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarkSpaceWar</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background-color: #0a0a1a; color: #00f2ff; font-family: sans-serif; text-align: center; margin: 0; padding-top: 50px; user-select: none; }
+        .score { font-size: 50px; font-weight: bold; margin: 20px 0; text-shadow: 0 0 15px #00f2ff; }
+        .rocket { font-size: 120px; cursor: pointer; transition: transform 0.1s; display: inline-block; }
+        .rocket:active { transform: scale(0.9); }
+        .user-info { font-size: 14px; color: #555; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="user-info" id="userName">Kaptan Yükleniyor...</div>
+    <h1>STARK SPACE WAR</h1>
+    <div class="score" id="scoreDisplay">0</div>
+    <div class="rocket" id="tapBtn">🚀</div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // Telegram'dan kullanıcı bilgilerini alıyoruz
+        const user = tg.initDataUnsafe?.user || { id: 12345, first_name: "Pilot" };
+        const userId = user.id;
+        document.getElementById('userName').innerText = "Kaptan: " + user.first_name;
+
+        let score = 0;
+        const scoreDisplay = document.getElementById('scoreDisplay');
+
+        // 1. ADIM: Oyun açıldığında sunucudan eski puanı iste
+        // (Şimdilik localhost yazdık, birazdan bunu internet linkiyle değiştireceğiz)
+        fetch(`http://localhost:3000/get-score/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                score = data.score || 0;
+                scoreDisplay.innerText = score;
+            })
+            .catch(err => console.log("Henüz puan çekilemedi, sunucu kapalı olabilir."));
+
+        // 2. ADIM: Tıklama işlemi
+        document.getElementById('tapBtn').onclick = () => {
+            score++;
+            scoreDisplay.innerText = score;
+
+            // Puanı sunucuya (bot.js'ye) gönder
+            fetch('http://localhost:3000/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: userId, score: score })
+            }).catch(err => console.log("Puan kaydedilemedi."));
+
+            // Titreşim ver
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+        };
+    </script>
+</body>
+</html>
