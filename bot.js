@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const token = '8733690490:AAEml6rZTP0d8VSUMjMoXLwXuWF3G8S7g';
+const token ='8733690490:AAEml6rZTP0d8VSUMjMoXLwKwXuWF3G8S7g';
 const bot = new TelegramBot(token, { polling: true });
 const GAME_URL = "https://stark-space-war.vercel.app";
 
