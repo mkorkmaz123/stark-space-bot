@@ -34,7 +34,7 @@ app.get('/get-score/:userId', (req, res) => {
 bot.onText(/\/start/, (msg) => {
     bot.sendMessage(msg.chat.id, "🚀 Kaptan, savaşa devam!", {
         reply_markup: {
-            inline_keyboard: [[{ text: "OYNA ☄️", web_app: { url: GAME_URL } }]]
+            inline_keyboard: [[{ text: "OYNA ☄️", web_app: { url: "https://stark-space-war.vercel.app?v=2" } } ]]
         }
     });
 });
