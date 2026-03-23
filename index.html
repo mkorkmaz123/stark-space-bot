@@ -35,7 +35,7 @@
 
         // 1. ADIM: Oyun açıldığında sunucudan eski puanı iste
         // (Şimdilik localhost yazdık, birazdan bunu internet linkiyle değiştireceğiz)
-        fetch(`http://localhost:3000/get-score/${userId}`)
+        fetch(`https://stark-space-bot.onrender.com/get-score/${userId}`)
             .then(res => res.json())
             .then(data => {
                 score = data.score || 0;
@@ -49,7 +49,7 @@
             scoreDisplay.innerText = score;
 
             // Puanı sunucuya (bot.js'ye) gönder
-            fetch('http://localhost:3000/save', {
+            fetch('https://stark-space-bot.onrender.com/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId: userId, score: score })
