@@ -39,4 +39,4 @@ bot.onText(/\/start/, (msg) => {
     });
 });
 
-app.listen(3000, () => console.log('Sunucu 3000 portunda aktif!'));
+app.listen(process.env.PORT || 3000)
