@@ -32,10 +32,17 @@ app.get('/get-score/:userId', (req, res) => {
 });
 
 bot.onText(/\/start/, (msg) => {
-    bot.sendMessage(msg.chat.id, "🚀 Kaptan, savaşa devam!", {
+    const chatId = msg.chat.id;
+    console.log(`${chatId} ID'li kullanıcı start verdi!`); // Bunu loglarda görmek için ekle
+    
+    bot.sendMessage(chatId, "🚀 Stark Space War'a Hoş Geldin!", {
         reply_markup: {
-            inline_keyboard: [[{ text: "OYNA ☄️", web_app: { url: "https://stark-space-war.vercel.app?v=2" } } ]]
+            inline_keyboard: [[
+                { text: "OYNA ☄️", web_app: { url: "https://stark-space-war.vercel.app" } }
+            ]]
         }
+    });
+});        }
     });
 });
 
